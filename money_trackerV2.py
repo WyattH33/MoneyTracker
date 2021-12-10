@@ -1,5 +1,6 @@
 place_holder_var = 0
-# class with all the logic and stuff behind the budget
+
+# class for creating each budget and user
 class Budget():
     def __init__(self, monthtly_income, username):
         self.username = username_var
@@ -13,13 +14,13 @@ class Budget():
 # obtains and stores categories 
     def get_class_cat(self):
 
-        # creates objects and adds them to a list
+        # creates category objects and adds them to a list
         for i in range(len(self.category_name_lis)):
             self.category_obj_lis.append("")                                                     
             self.category_obj_lis[i] = Category(self.category_name_lis[i])
 
 
-# actual transaction logic and displays transaction details
+# actual transaction logic, displays transaction details, adds the data from each transaction to value_lis
     def transaction(self):
         self.dep_loc = dep_loc
         self.dep_amt = dep_amt
@@ -50,7 +51,6 @@ class Budget():
             if len(self.value_lis) > 4:
                 del self.value_lis[:4]
 
-            print(name_lis[index])
             if name_lis[index] == dep_loc:
                 self.category_dict =  get_category_data(name_lis[index], self.value_lis)
             elif place_holder_var == 0:
@@ -60,7 +60,8 @@ class Budget():
                 print(f"Amount spent on {y.name}: ${y.amt} \nAmount left to spend: ${round(y.left,2)}")
 
 
-# Class that creates a category object
+# Class that defines a category object
+
 class Category():
     def __init__(self, name):
         self.name = name
@@ -71,17 +72,6 @@ class Category():
         self.perc_lis = perc_lis
         self.monthly_income = inc
 
-class User:
-    def __init__(self, username_var):
-        self.username = username_var
-        self.category_dict = category_dict
-        
-    def store_data(self):
-        pass
-        # stores current category_dict to each user (meant to be run after every instance of transction)
-
-
-       
 # gets monthly income
 def get_inc():
     while True:
@@ -102,7 +92,7 @@ def get_cat_num():
             print("Invalid Input : Please enter a number")
             continue
 
-# gets each category
+# gets each category name and adds it to name_lis
 name_lis = []
 def get_cat(cat_num):
     num = 0
@@ -112,7 +102,7 @@ def get_cat(cat_num):
         name_lis.append(cat)
     return name_lis
 
-# runs and adds each categories percentages to a list
+# retrieves and adds each categories percentages to a list
 perc_lis = []
 def gather_perc():
     print("Enter desired percentage of income spent for each category (do not include %): ")
@@ -144,7 +134,6 @@ def gather_perc():
 # gets the deposit location
 def get_loc():
 
-    # gets the deposit location
     while True:
         try:
             dep_loc = ""
@@ -158,7 +147,7 @@ def get_loc():
             print("Invalid Input : Must be valid category")
             continue
 
-    # gets the deposit amount
+# gets the deposit amount
 def get_amt():
     while True:
         try:
@@ -169,19 +158,20 @@ def get_amt():
             print("Invalid Input : Must be a number")
             continue
 
-# defines the percentage for each category
+# assigns each category its percentage 
 def get_perc():
     for name in name_lis():
         perc = float(input(f"{name}: "))
         perc_lis.append(perc)
     return perc_lis
 
+# makes a dictionary with each category (the data for each category is added later)
 category_dict = {}
 def make_dict():
     for index, name in enumerate(name_lis):
         category_dict[name] = ["NO DATA"]
-        print(category_dict)
 
+# adds each categories data to category_dict
 value_count = 0
 def get_category_data(dep_loc_var, value_lis_var):
     category_dict[dep_loc_var] = value_lis_var
@@ -199,6 +189,7 @@ done = 0
 while True:    
     if done != 3:
         if username_var not in user_dict:
+            # runs when a the username isnt recognized 
             inc = get_inc()
             cat_num = get_cat_num()
             name_lis = get_cat(cat_num)
@@ -215,15 +206,13 @@ while True:
                 print(f"Category - {name_lis[r]} :: Max budget - {value[0]} :: Budget spent - {value[1]} :: Budget left - {value[2]}")
                 r += 1
 
-            
+        # code that is ran to perform every transactoin 
         dep_loc = get_loc()
         dep_amt = get_amt()
         username = Budget(inc, username_var)   
         username.get_class_cat()
         value_lis = username.transaction()
         place_holder_var += 1
-        print(user_dict)
-        print(category_dict)
         user_dict = store_user()
 
 
@@ -238,26 +227,26 @@ while True:
         except ValueError:
             print("Invalid Input : Please enter the number corresponding to your choice")
             continue
-
+# resets all data that applies the current user so it can create new data
     if done == 1:
         username_var = input("Username: ")
         perc_lis = []
         name_lis = []
         category_dict = {}
 
+# same thing as above but doesn't reset the user, just all of the current users data
     elif done == 2: 
         user_dict.pop(username.username)
         perc_lis = []
         name_lis = []
         category_dict = {}
         continue
-
+# allows you to continue to make transactions as the current user without changing any of the data
     elif done == 3:
         dep_loc = get_loc()
         dep_amt = get_amt()
         value_lis = username.transaction()
         store_user()
-        print(user_dict)
         continue
 
     elif done == 4:
