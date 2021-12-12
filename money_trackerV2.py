@@ -5,18 +5,18 @@ class Budget():
     def __init__(self, monthtly_income, username):
         self.username = username_var
         self.monthly_income = monthtly_income
-        self.perc_lis = perc_lis 
+        self.perc_lis = perc_lis
         self.value_lis = []
         self.category_name_lis = name_lis
         self.category_obj_lis = []
- 
-       
-# obtains and stores categories 
+
+
+# obtains and stores categories
     def get_class_cat(self):
 
         # creates category objects and adds them to a list
         for i in range(len(self.category_name_lis)):
-            self.category_obj_lis.append("")                                                     
+            self.category_obj_lis.append("")
             self.category_obj_lis[i] = Category(self.category_name_lis[i])
 
 
@@ -34,13 +34,13 @@ class Budget():
                 except UnboundLocalError:
                     pass
             else:
-                y.max = (y.perc_lis[index] / 100) * y.monthly_income 
+                y.max = (y.perc_lis[index] / 100) * y.monthly_income
             if self.dep_loc in self.category_name_lis[index]:
                 self.dep_amt = dep_amt
                 pass
             else:
                 self.dep_amt = 0
-                pass 
+                pass
             y.amt += self.dep_amt
             y.left = y.max - y.amt
             self.max = y.max
@@ -81,7 +81,7 @@ def get_inc():
         except ValueError:
             print("Invalid Input : Must be a number")
             continue
-            
+
 # gets number of categories
 def get_cat_num():
     while True:
@@ -120,7 +120,7 @@ def gather_perc():
                     continue
             if y == 0:
                 perc_lis.append(perc)
-        # makes sure the percentages sum from 95-105  
+        # makes sure the percentages sum from 95-105
             if len(perc_lis) == cat_num:
                 if sum(perc_lis) not in range(95, 105):
                     print("Invalid Input : Must add to 100%")
@@ -158,7 +158,7 @@ def get_amt():
             print("Invalid Input : Must be a number")
             continue
 
-# assigns each category its percentage 
+# assigns each category its percentage
 def get_perc():
     for name in name_lis():
         perc = float(input(f"{name}: "))
@@ -186,17 +186,17 @@ def store_user():
 # actual code that is ran
 username_var = input("Username: ")
 done = 0
-while True:    
+while True:
     if done != 3:
         if username_var not in user_dict:
-            # runs when a the username isnt recognized 
+            # runs when a the username isnt recognized
             inc = get_inc()
             cat_num = get_cat_num()
             name_lis = get_cat(cat_num)
             make_dict()
             perc_lis = gather_perc()
             place_holder_var = 0
-        else: 
+        else:
             category_dict = user_dict[username_var]
             name_lis.extend(category_dict.keys())
             for key in category_dict:
@@ -206,10 +206,10 @@ while True:
                 print(f"Category - {name_lis[r]} :: Max budget - {value[0]} :: Budget spent - {value[1]} :: Budget left - {value[2]}")
                 r += 1
 
-        # code that is ran to perform every transactoin 
+        # code that is ran to perform every transactoin
         dep_loc = get_loc()
         dep_amt = get_amt()
-        username = Budget(inc, username_var)   
+        username = Budget(inc, username_var)
         username.get_class_cat()
         value_lis = username.transaction()
         place_holder_var += 1
@@ -235,7 +235,7 @@ while True:
         category_dict = {}
 
 # same thing as above but doesn't reset the user, just all of the current users data
-    elif done == 2: 
+    elif done == 2:
         user_dict.pop(username.username)
         perc_lis = []
         name_lis = []
