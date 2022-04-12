@@ -1,3 +1,8 @@
+'''
+program ideas: 
+add a deposit description
+'''
+
 place_holder_var = 0
 
 # class for creating each budget and user
@@ -242,5 +247,4 @@ while True:
     else:
         print("Invalid Input")
         continue
-
 
